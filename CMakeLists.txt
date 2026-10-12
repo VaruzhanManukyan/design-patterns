@@ -8,4 +8,4 @@ add_executable(design_patterns_builder builder/main.cpp)
 add_executable(design_patterns_prototype prototype/main.cpp)
 add_executable(design_patterns_factory factory/main.cpp)
 add_executable(design_patterns_abstract_factory abstract_factory/main.cpp)
-
+add_executable(design_patterns_composite composite/main.cpp)

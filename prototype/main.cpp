@@ -29,7 +29,7 @@ class Circle final : public Shape {
 private:
     double radius_;
 public:
-    Circle(double radius, std::string color) : Shape(color), radius_(radius) {}
+    Circle(double radius, std::string color) : Shape(std::move(color)), radius_(radius) {}
 
     std::unique_ptr<Shape> clone() override {
         return std::make_unique<Circle>(*this);
@@ -72,7 +72,7 @@ int main() {
     shapes.push_back(circle.clone());
     shapes.push_back(rectangle.clone());
 
-    auto clonedCircle = shapes[0]->clone();
+    std::unique_ptr<Shape> clonedCircle = shapes[0]->clone();
     clonedCircle->set_color("Green");
 
     assert(circle.get_color() == "Red");
@@ -81,7 +81,7 @@ int main() {
 
     assert(clonedCircle.get() != shapes[0].get());
 
-    for (const auto& shape : shapes) {
+    for (const std::unique_ptr<Shape>& shape : shapes) {
         shape->print();
     }
 

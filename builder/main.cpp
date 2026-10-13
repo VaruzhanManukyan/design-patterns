@@ -94,7 +94,7 @@ public:
 };
 
 int main() {
-    auto request = HttpRequestBuilder{}
+    HttpRequest request = HttpRequestBuilder{}
     .set_url("https://api.example.com")
     .set_method("POST")
     .set_timeout(15)

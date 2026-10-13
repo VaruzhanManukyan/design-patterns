@@ -1,5 +1,3 @@
-
-
 #include <cassert>
 #include <iostream>
 #include <memory>
@@ -39,6 +37,7 @@ class ShapeFactory {
 public:
     virtual ~ShapeFactory() = default;
 
+    [[nodiscard]]
     virtual std::unique_ptr<Shape> create() const = 0;
 
     void render() const {
@@ -49,7 +48,6 @@ public:
 
 class CircleFactory final : public ShapeFactory {
     double radius_;
-
 public:
     explicit CircleFactory(double radius)
         : radius_(radius) {}
@@ -82,7 +80,7 @@ int main() {
     factories.push_back(std::make_unique<CircleFactory>(10.0));
     factories.push_back(std::make_unique<RectangleFactory>(20.0, 30.0));
 
-    for (const auto& factory : factories) {
+    for (const std::unique_ptr<ShapeFactory>& factory : factories) {
         factory->render();
     }
 

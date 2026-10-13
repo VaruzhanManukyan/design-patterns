@@ -1,5 +1,3 @@
-
-
 #include <cassert>
 #include <iostream>
 #include <memory>
@@ -49,16 +47,20 @@ public:
 class UIFactory {
 public:
     virtual ~UIFactory() = default;
+    [[nodiscard]]
     virtual std::unique_ptr<Button> createButton() const = 0;
+    [[nodiscard]]
     virtual std::unique_ptr<CheckButton> createCheckButton() const = 0;
 };
 
 class WindowsFactory final : public UIFactory {
 public:
+    [[nodiscard]]
     std::unique_ptr<Button> createButton() const override {
         return std::make_unique<WindowsButton>();
     }
 
+    [[nodiscard]]
     std::unique_ptr<CheckButton> createCheckButton() const override {
         return std::make_unique<WindowsCheckButton>();
     }
@@ -66,10 +68,12 @@ public:
 
 class MacFactory final : public UIFactory {
 public:
+    [[nodiscard]]
     std::unique_ptr<Button> createButton() const override {
         return std::make_unique<MacButton>();
     }
 
+    [[nodiscard]]
     std::unique_ptr<CheckButton> createCheckButton() const override {
         return std::make_unique<MacCheckButton>();
     }
@@ -98,8 +102,8 @@ int main() {
     factories.push_back(std::make_unique<WindowsFactory>());
     factories.push_back(std::make_unique<MacFactory>());
 
-    for (const auto& factory : factories) {
-        auto button = factory->createButton();
+    for (const std::unique_ptr<UIFactory>& factory : factories) {
+        std::unique_ptr<Button> button = factory->createButton();
         assert(button != nullptr);
     }
 

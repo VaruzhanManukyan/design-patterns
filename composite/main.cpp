@@ -7,7 +7,7 @@
 
 class Shape {
 public:
-    virtual ~Shape() {}
+    virtual ~Shape() = default;
 
     virtual void draw(std::size_t depth = 0) const = 0;
     virtual std::size_t leaf_count() const noexcept = 0;
@@ -66,7 +66,7 @@ public:
         std::cout << std::string(depth * 2, ' ')
           << "Group: " << name_ << '\n';
 
-        for (const auto& child : children_) {
+        for (const std::unique_ptr<Shape>& child : children_) {
             child->draw(depth + 1);
         }
     }
@@ -86,13 +86,12 @@ public:
 static_assert(std::is_abstract_v<Shape>);
 static_assert(std::is_base_of_v<Shape, ShapeGroup>);
 
-
 int main() {
     ShapeGroup canvas("Canvas");
 
     canvas.add(std::make_unique<Circle>(10.0));
 
-    auto group = std::make_unique<ShapeGroup>("Details");
+    std::unique_ptr<ShapeGroup> group = std::make_unique<ShapeGroup>("Details");
 
     group->add(std::make_unique<Rectangle>(20.0, 30.0));
     group->add(std::make_unique<Circle>(5.0));

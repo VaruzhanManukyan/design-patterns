@@ -6,10 +6,6 @@
 #include <vector>
 #include <thread>
 
-namespace std {
-    class thread;
-}
-
 class ConfigManager final {
 private:
     mutable std::mutex mutex_;
@@ -35,7 +31,6 @@ public:
 
     std::optional<std::string> get(const std::string& key) {
         std::lock_guard<std::mutex> lock(mutex_);
-
         std::unordered_map<std::string, std::string>::iterator it = config_.find(key);
         if (it == config_.end()) {
             return std::nullopt;
